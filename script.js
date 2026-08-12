@@ -6,15 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* --- 1. DEFAULT CONFIGURATION (EASY TO CUSTOMIZE) --- */
   const DEFAULT_CONFIG = {
-    recipientName: "Sofia",
+    recipientName: "Noor",
     messageText: "Today isn't just another day. It's a reminder of how special you are and how much happiness you bring into the lives of the people around you.\n\nI hope this new year of your life brings you beautiful memories, endless smiles, unexpected happiness, and everything your heart wishes for.\n\nYou deserve all the wonderful things life has to offer. ❤️",
     photos: [
-      { url: "assets/photo1.jpg", caption: "A beautiful moment ❤️" },
-      { url: "assets/photo2.jpg", caption: "One of my favorite memories ✨" },
-      { url: "assets/photo3.jpg", caption: "Your bright, contagious smile 🌟" },
-      { url: "assets/photo4.jpg", caption: "Unforgettable celebration 💖" },
-      { url: "assets/photo5.jpg", caption: "Sweet moments together 🌸" },
-      { url: "assets/photo6.jpg", caption: "Forever cherished 💖" }
+      { url: "assets/anime1.png", caption: "A romantic moment under the blossoms 🌸" },
+      { url: "assets/anime2.png", caption: "Your beautiful, bright smile ✨" },
+      { url: "assets/anime3.png", caption: "Under the magical starry night sky 🌟" },
+      { url: "assets/anime4.png", caption: "Cozy quiet afternoons together 💖" },
+      { url: "assets/anime5.png", caption: "Walking hand in hand at sunset 🌅" },
+      { url: "assets/anime6.png", caption: "Lantern lights reflecting in our eyes 🏮" }
     ]
   };
 
@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnSavePersonalizer.addEventListener('click', () => {
-    const newName = document.getElementById('input-name').value.trim() || "Sofia";
+    const newName = document.getElementById('input-name').value.trim() || "Noor";
     const newMsg = document.getElementById('input-message').value.trim() || appConfig.messageText;
 
     saveConfig({ recipientName: newName, messageText: newMsg });
