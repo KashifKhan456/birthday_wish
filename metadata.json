@@ -1,0 +1,6 @@
+{
+  "name": "Birthday Surprise",
+  "description": "A beautiful, emotional, romantic, premium personalized birthday surprise website.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
