@@ -174,8 +174,13 @@
         </p>
       </div>
 
-      <div class="photo-grid" id="photo-grid">
-        <!-- Photo Cards populated via JavaScript -->
+      <div class="photo-stack-wrapper">
+        <div class="photo-stack" id="photo-stack">
+          <!-- Stacked cards dynamically populated by JS -->
+        </div>
+        <div class="stack-instruction">
+          <span class="finger-tap-icon">👇</span> Swipe or tap the photo to see the next memory
+        </div>
       </div>
 
       <!-- Step Navigation -->
@@ -192,16 +197,7 @@
     </div>
   </section>
 
-  <!-- Fullscreen Lightbox Modal -->
-  <div class="lightbox-modal" id="lightbox">
-    <button class="lightbox-close" id="lightbox-close">&times;</button>
-    <button class="lightbox-prev" id="lightbox-prev">&#10094;</button>
-    <button class="lightbox-next" id="lightbox-next">&#10095;</button>
-    <div class="lightbox-content">
-      <img id="lightbox-img" src="" alt="Memory Photo" />
-      <div class="lightbox-caption" id="lightbox-caption"></div>
-    </div>
-  </div>
+
 
   <!-- ==========================================================================
        5. REASONS YOU'RE SPECIAL

@@ -507,79 +507,164 @@ document.addEventListener('DOMContentLoaded', () => {
     btnTypeReplay.addEventListener('click', startTypewriter);
   }
 
-  /* --- 7. PHOTO GALLERY & LIGHTBOX MODAL --- */
-  const photoGridEl = document.getElementById('photo-grid');
-  const lightboxModal = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-  const lightboxCaption = document.getElementById('lightbox-caption');
-  const lightboxClose = document.getElementById('lightbox-close');
-  const lightboxPrev = document.getElementById('lightbox-prev');
-  const lightboxNext = document.getElementById('lightbox-next');
-
-  let currentPhotoIndex = 0;
+  /* --- 7. PHOTO GALLERY 3D SWIPE STACK --- */
+  const photoStackEl = document.getElementById('photo-stack');
+  let activeIndex = 0;
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let currentY = 0;
 
   function renderGallery() {
-    photoGridEl.innerHTML = "";
+    if (!photoStackEl) return;
+    photoStackEl.innerHTML = "";
+    
     appConfig.photos.forEach((photo, idx) => {
       const card = document.createElement('div');
-      card.className = 'photo-card reveal-on-scroll';
+      card.className = 'stack-card';
       card.innerHTML = `
-        <img src="${photo.url}" alt="${photo.caption}" loading="lazy" />
-        <div class="photo-overlay">
-          <div class="photo-caption">${photo.caption}</div>
+        <div class="stack-card-image-wrapper">
+          <img src="${photo.url}" alt="${photo.caption}" loading="lazy" />
         </div>
+        <div class="stack-card-caption">${photo.caption}</div>
       `;
-      card.addEventListener('click', () => openLightbox(idx));
-      photoGridEl.appendChild(card);
+      setupCardDrag(card, idx);
+      photoStackEl.appendChild(card);
     });
+
+    updateStackLayout();
 
     if (steps[currentStepIndex] === 'gallery') {
       revealStepElements('gallery');
     }
   }
 
-  function openLightbox(index) {
-    currentPhotoIndex = index;
-    updateLightbox();
-    lightboxModal.classList.add('active');
-  }
-
-  function updateLightbox() {
-    const photo = appConfig.photos[currentPhotoIndex];
-    lightboxImg.src = photo.url;
-    lightboxCaption.textContent = photo.caption;
-  }
-
-  function closeLightbox() {
-    lightboxModal.classList.remove('active');
-  }
-
-  if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
-  if (lightboxPrev) {
-    lightboxPrev.addEventListener('click', () => {
-      currentPhotoIndex = (currentPhotoIndex - 1 + appConfig.photos.length) % appConfig.photos.length;
-      updateLightbox();
-    });
-  }
-  if (lightboxNext) {
-    lightboxNext.addEventListener('click', () => {
-      currentPhotoIndex = (currentPhotoIndex + 1) % appConfig.photos.length;
-      updateLightbox();
-    });
-  }
-
-  if (lightboxModal) {
-    lightboxModal.addEventListener('click', (e) => {
-      if (e.target === lightboxModal) closeLightbox();
+  function updateStackLayout() {
+    if (!photoStackEl) return;
+    const cards = photoStackEl.querySelectorAll('.stack-card');
+    cards.forEach((card, idx) => {
+      if (idx < activeIndex) {
+        card.style.transform = `translate3d(${card.dataset.swipeX || '-150%'}, ${card.dataset.swipeY || '0px'}, 0px) rotate(${card.dataset.swipeRotate || '-30deg'})`;
+        card.style.opacity = "0";
+        card.style.pointerEvents = "none";
+      } else if (idx === activeIndex) {
+        card.style.transform = "translate3d(0, 0, 0) rotate(0deg) scale(1)";
+        card.style.opacity = "1";
+        card.style.pointerEvents = "auto";
+        card.style.zIndex = "10";
+      } else {
+        const stackOffset = idx - activeIndex;
+        if (stackOffset === 1) {
+          card.style.transform = "translate3d(0, 8px, -15px) rotate(2deg) scale(0.96)";
+          card.style.opacity = "0.95";
+          card.style.zIndex = "9";
+        } else if (stackOffset === 2) {
+          card.style.transform = "translate3d(0, 16px, -30px) rotate(-2deg) scale(0.92)";
+          card.style.opacity = "0.75";
+          card.style.zIndex = "8";
+        } else {
+          card.style.transform = "translate3d(0, 24px, -45px) rotate(1deg) scale(0.88)";
+          card.style.opacity = "0";
+          card.style.zIndex = "7";
+        }
+        card.style.pointerEvents = "none";
+      }
     });
   }
 
-  document.addEventListener('keydown', (e) => {
-    if (!lightboxModal || !lightboxModal.classList.contains('active')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') lightboxPrev.click();
-    if (e.key === 'ArrowRight') lightboxNext.click();
-  });
+  function setupCardDrag(card, idx) {
+    const onStart = (e) => {
+      if (idx !== activeIndex) return;
+      isDragging = true;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      startX = clientX;
+      startY = clientY;
+      card.style.transition = "none";
+      card.style.cursor = "grabbing";
+    };
+
+    const onMove = (e) => {
+      if (!isDragging || idx !== activeIndex) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      currentX = clientX - startX;
+      currentY = clientY - startY;
+      const rotate = currentX * 0.08;
+      card.style.transform = `translate3d(${currentX}px, ${currentY}px, 0px) rotate(${rotate}deg)`;
+    };
+
+    const onEnd = () => {
+      if (!isDragging || idx !== activeIndex) return;
+      isDragging = false;
+      card.style.cursor = "grab";
+      card.style.transition = "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease";
+
+      const threshold = 100;
+      if (Math.abs(currentX) > threshold) {
+        swipeCard(card, currentX > 0 ? "right" : "left");
+      } else {
+        currentX = 0;
+        currentY = 0;
+        updateStackLayout();
+      }
+    };
+
+    card.addEventListener('mousedown', onStart);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+
+    card.addEventListener('touchstart', onStart, { passive: true });
+    document.addEventListener('touchmove', (e) => {
+      if (isDragging && idx === activeIndex) {
+        if (e.cancelable) e.preventDefault();
+        onMove(e);
+      }
+    }, { passive: false });
+    document.addEventListener('touchend', onEnd);
+
+    card.addEventListener('click', () => {
+      if (Math.abs(currentX) < 5) {
+        swipeCard(card, "right");
+      }
+    });
+  }
+
+  function swipeCard(card, direction) {
+    const swipeX = direction === "right" ? "150%" : "-150%";
+    const swipeRotate = direction === "right" ? "30deg" : "-30deg";
+    
+    card.dataset.swipeX = swipeX;
+    card.dataset.swipeRotate = swipeRotate;
+    card.dataset.swipeY = `${currentY}px`;
+    
+    card.style.transition = "transform 0.6s ease-out, opacity 0.6s ease-out";
+    card.style.transform = `translate3d(${swipeX}, ${currentY}px, 0px) rotate(${swipeRotate})`;
+    card.style.opacity = "0";
+    card.style.pointerEvents = "none";
+    
+    activeIndex++;
+    
+    if (activeIndex >= appConfig.photos.length) {
+      setTimeout(() => {
+        activeIndex = 0;
+        const cards = photoStackEl.querySelectorAll('.stack-card');
+        cards.forEach(c => {
+          c.style.transition = "transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease";
+          delete c.dataset.swipeX;
+          delete c.dataset.swipeRotate;
+          delete c.dataset.swipeY;
+        });
+        updateStackLayout();
+      }, 800);
+    } else {
+      setTimeout(updateStackLayout, 200);
+    }
+    
+    currentX = 0;
+    currentY = 0;
+  }
 
   /* --- 8. INTERACTIVE CINEMATIC SURPRISE --- */
   const btnTriggerSurprise = document.getElementById('btn-trigger-surprise');

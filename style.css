@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* --- Google Fonts Import --- */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Caveat:wght@600;700&display=swap');
 
 /* --- CSS Variables / Theme Configuration --- */
 :root {
@@ -593,152 +593,106 @@ section {
 }
 
 /* ==========================================================================
-   SECTION 4: PHOTO MEMORIES GALLERY
+   SECTION 4: PHOTO MEMORIES GALLERY - 3D POLAROID STACK
    ========================================================================== */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+.photo-stack-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-}
-
-.photo-card {
+  margin: 20px auto;
   position: relative;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  aspect-ratio: 4/3;
-  cursor: pointer;
-  background: var(--bg-card);
-  border: 1px solid var(--bg-card-border);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: all var(--transition-smooth);
 }
 
-.photo-card img {
+.photo-stack {
+  position: relative;
+  width: 310px;
+  height: 380px;
+  perspective: 1000px;
+}
+
+.stack-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  padding: 12px 12px 20px 12px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease, box-shadow 0.3s ease;
+  transform-origin: 50% 100%;
+}
+
+.stack-card:active {
+  cursor: grabbing;
+}
+
+.stack-card-image-wrapper {
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.stack-card-image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.photo-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(11, 7, 30, 0.9) 0%, rgba(11, 7, 30, 0.2) 60%, transparent 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 20px;
-  opacity: 0.9;
-  transition: opacity var(--transition-fast);
-}
-
-.photo-caption {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #ffffff;
-  transform: translateY(0);
-  transition: transform var(--transition-fast);
-}
-
-.photo-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--primary);
-  box-shadow: 0 16px 40px var(--primary-glow);
-}
-
-.photo-card:hover img {
-  transform: scale(1.08);
-}
-
-/* Fullscreen Lightbox Modal */
-.lightbox-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(5, 2, 18, 0.92);
-  backdrop-filter: blur(20px);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
 }
 
-.lightbox-modal.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.lightbox-content {
-  position: relative;
-  max-width: 90vw;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.lightbox-content img {
-  max-width: 100%;
-  max-height: 70vh;
-  border-radius: var(--radius-sm);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.lightbox-caption {
-  margin-top: 16px;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #ffffff;
+.stack-card-caption {
+  margin-top: 14px;
+  font-family: 'Caveat', 'Segoe Print', cursive;
+  font-size: 1.35rem;
+  color: #2d3748;
+  font-weight: 700;
   text-align: center;
+  line-height: 1.2;
 }
 
-.lightbox-close,
-.lightbox-prev,
-.lightbox-next {
+/* Washi Tape on Stack Card */
+.stack-card::before {
+  content: '';
   position: absolute;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-  font-size: 1.5rem;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 70px;
+  height: 24px;
+  background: rgba(255, 120, 180, 0.45);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.stack-card:nth-child(even)::before {
+  transform: translateX(-50%) rotate(3deg);
+  background: rgba(186, 104, 200, 0.45);
+}
+
+.stack-instruction {
+  margin-top: 20px;
+  font-size: 0.92rem;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background var(--transition-fast);
-  z-index: 1001;
+  gap: 8px;
+  animation: floatFlower 3s ease-in-out infinite;
 }
 
-.lightbox-close {
-  top: 20px;
-  right: 20px;
+.finger-tap-icon {
+  font-size: 1.2rem;
 }
 
-.lightbox-prev {
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-}
 
-.lightbox-next {
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.lightbox-close:hover,
-.lightbox-prev:hover,
-.lightbox-next:hover {
-  background: var(--primary);
-}
 
 /* ==========================================================================
    SECTION 5: REASONS YOU'RE SPECIAL (3D FLIP CARDS)
@@ -1233,10 +1187,23 @@ section {
     padding: 24px 18px;
   }
 
-  .photo-grid,
   .reasons-grid,
   .wishes-grid {
     grid-template-columns: 1fr;
+  }
+
+  .photo-stack {
+    width: 275px;
+    height: 340px;
+  }
+
+  .stack-card-image-wrapper {
+    height: 230px;
+  }
+
+  .stack-card-caption {
+    font-size: 1.2rem;
+    margin-top: 10px;
   }
 
   .btn-glow {
