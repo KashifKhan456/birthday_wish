@@ -1276,7 +1276,7 @@ section {
     padding: 0 12px !important;
   }
 
-  .step-nav .btn-secondary {
+  .step-nav .btn-step-back {
     width: 80px !important;
     flex: 0 0 auto;
   }
@@ -1285,6 +1285,19 @@ section {
     flex: 1 1 auto;
     width: auto !important;
     min-width: 0 !important;
+  }
+
+  /* Prevent restart button from being squished */
+  #btn-final-restart {
+    width: auto !important;
+    min-width: 180px;
+    padding: 0 24px !important;
+    flex: 0 1 auto !important;
+  }
+
+  .final-title {
+    font-size: clamp(1.4rem, 6vw, 2.2rem) !important;
+    white-space: nowrap !important;
   }
 
   /* Reposition floating controls to top on mobile to avoid overlap */
