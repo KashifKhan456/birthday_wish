@@ -960,7 +960,13 @@ section {
    ========================================================================== */
 @media (max-width: 768px) {
   section {
-    padding: 60px 16px;
+    padding: 80px 16px 120px;
+    justify-content: flex-start;
+  }
+
+  #hero {
+    justify-content: center;
+    padding: 40px 16px;
   }
 
   .glass-card {
@@ -993,6 +999,25 @@ section {
     width: 100% !important;
     justify-content: center;
     box-sizing: border-box;
+  }
+
+  /* Reposition floating controls to top on mobile to avoid overlap */
+  .floating-controls {
+    top: 16px;
+    right: 16px;
+    bottom: auto;
+  }
+
+  .floating-left-controls {
+    top: 16px;
+    left: 16px;
+    bottom: auto;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
   }
 }
 
