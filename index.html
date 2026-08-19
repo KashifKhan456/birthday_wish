@@ -17,10 +17,13 @@
   <!-- Background Particle & Fireworks Canvas -->
   <canvas id="particle-canvas"></canvas>
 
+  <!-- Step Progress Indicator -->
+  <div class="step-progress-container" id="step-progress"></div>
+
   <!-- ==========================================================================
        1. WELCOME SCREEN (HERO)
        ========================================================================== -->
-  <section id="hero">
+  <section id="hero" class="active">
     <div class="container hero-content">
       <h1 class="hero-title font-title">
         Hey, <span class="recipient-name gradient-text glowing-text">Noor</span> ❤️
@@ -85,6 +88,12 @@
           <span>🕯️ Tap Cake to Blow Candles</span>
         </button>
       </div>
+
+      <!-- Step Navigation -->
+      <div class="step-nav">
+        <button class="btn-secondary btn-step-back"><span>⬅️ Back</span></button>
+        <button id="btn-reveal-next" class="btn-glow btn-step-next"><span>Next: Read Message 💌</span></button>
+      </div>
     </div>
   </section>
 
@@ -113,6 +122,12 @@
             <span>🔄 Replay</span>
           </button>
         </div>
+
+        <!-- Step Navigation -->
+        <div class="step-nav" style="justify-content: flex-end;">
+          <button class="btn-secondary btn-step-back"><span>⬅️ Back</span></button>
+          <button id="btn-message-next" class="btn-glow btn-step-next"><span>Next: Our Memories 📸</span></button>
+        </div>
       </div>
     </div>
   </section>
@@ -133,6 +148,12 @@
 
       <div class="photo-grid" id="photo-grid">
         <!-- Photo Cards populated via JavaScript -->
+      </div>
+
+      <!-- Step Navigation -->
+      <div class="step-nav">
+        <button class="btn-secondary btn-step-back"><span>⬅️ Back</span></button>
+        <button id="btn-gallery-next" class="btn-glow btn-step-next"><span>Next: Why You're Special ❤️</span></button>
       </div>
     </div>
   </section>
@@ -203,6 +224,12 @@
           </p>
         </div>
       </div>
+
+      <!-- Step Navigation -->
+      <div class="step-nav">
+        <button class="btn-secondary btn-step-back"><span>⬅️ Back</span></button>
+        <button id="btn-reasons-next" class="btn-glow btn-step-next"><span>Next: Wishes For You ✨</span></button>
+      </div>
     </div>
   </section>
 
@@ -245,6 +272,12 @@
           <p class="wish-text">“May this year give you golden moments you'll remember forever.”</p>
         </div>
       </div>
+
+      <!-- Step Navigation -->
+      <div class="step-nav">
+        <button class="btn-secondary btn-step-back"><span>⬅️ Back</span></button>
+        <button id="btn-wishes-next" class="btn-glow btn-step-next"><span>Next: One Final Surprise... 🎁</span></button>
+      </div>
     </div>
   </section>
 
@@ -263,6 +296,11 @@
         <button id="btn-trigger-surprise" class="btn-glow" style="padding: 20px 48px; font-size: 1.25rem;">
           <span>There’s One More Surprise… ✨</span>
         </button>
+
+        <!-- Step Navigation -->
+        <div class="step-nav">
+          <button class="btn-secondary btn-step-back"><span>⬅️ Back</span></button>
+        </div>
       </div>
     </div>
   </section>
@@ -303,6 +341,11 @@
         <span>Made with</span>
         <span class="beating-heart">❤️</span>
         <span>just for you</span>
+      </div>
+
+      <!-- Step Navigation -->
+      <div class="step-nav">
+        <button id="btn-final-restart" class="btn-secondary"><span>🔄 Restart Surprise</span></button>
       </div>
     </div>
   </section>

@@ -102,11 +102,13 @@ section {
   min-height: 100vh;
   width: 100%;
   padding: 80px 20px;
-  display: flex;
+  display: none; /* Hidden by default in step-by-step mode */
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .container {
@@ -976,4 +978,121 @@ section {
 
   .lightbox-prev { left: 10px; }
   .lightbox-next { right: 10px; }
+}
+
+/* ==========================================================================
+   STEP-BY-STEP SLIDESHOW MODE STYLES
+   ========================================================================== */
+
+/* Progress indicator at top */
+.step-progress-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 1px solid var(--bg-card-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: opacity var(--transition-smooth);
+}
+
+.step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border: none;
+}
+
+.step-dot.active {
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+  transform: scale(1.4);
+}
+
+.step-dot.visited {
+  background: var(--secondary);
+  opacity: 0.8;
+}
+
+/* Step Navigation Containers */
+.step-nav {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+}
+
+.btn-step-next {
+  min-width: 180px;
+}
+
+/* Step Animations */
+section.active {
+  display: flex;
+  animation: stepFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+section.fade-out {
+  display: flex;
+  animation: stepFadeOut 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes stepFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes stepFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+/* Custom balloon colors and adjustments */
+.balloon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.5rem;
+}
+
+/* Pulsing highlight for next buttons */
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px var(--primary-glow);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px var(--primary);
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out !important;
 }

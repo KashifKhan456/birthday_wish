@@ -289,18 +289,183 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnMusicToggle.addEventListener('click', toggleAudio);
 
-  /* --- 4. WELCOME BUTTON & TRANSITION --- */
+  /* --- 4. STEP-BY-STEP SURPRISE NAVIGATOR --- */
+  const steps = [
+    'hero',
+    'reveal',
+    'message',
+    'gallery',
+    'reasons',
+    'wishes',
+    'surprise',
+    'final'
+  ];
+
+  let currentStepIndex = 0;
+  let maxStepVisited = 0;
+
+  const progressContainer = document.getElementById('step-progress');
+
+  function initProgressDots() {
+    if (!progressContainer) return;
+    progressContainer.innerHTML = "";
+    steps.forEach((step, idx) => {
+      const dot = document.createElement('button');
+      dot.className = 'step-dot';
+      dot.title = `Go to Step ${idx + 1}`;
+      dot.setAttribute('aria-label', `Go to page ${idx + 1}`);
+      dot.addEventListener('click', () => {
+        if (idx <= maxStepVisited) {
+          goToStep(idx);
+        }
+      });
+      progressContainer.appendChild(dot);
+    });
+    updateProgressDots();
+  }
+
+  function updateProgressDots() {
+    if (!progressContainer) return;
+    const dots = progressContainer.querySelectorAll('.step-dot');
+    dots.forEach((dot, idx) => {
+      dot.classList.remove('active', 'visited');
+      if (idx === currentStepIndex) {
+        dot.classList.add('active');
+      } else if (idx < currentStepIndex) {
+        dot.classList.add('visited');
+      }
+    });
+
+    // Hide progress bar on first and last step
+    if (currentStepIndex === 0 || currentStepIndex === steps.length - 1) {
+      progressContainer.style.opacity = '0';
+      progressContainer.style.pointerEvents = 'none';
+    } else {
+      progressContainer.style.opacity = '1';
+      progressContainer.style.pointerEvents = 'auto';
+    }
+  }
+
+  function revealStepElements(stepId) {
+    const stepEl = document.getElementById(stepId);
+    if (!stepEl) return;
+    const elements = stepEl.querySelectorAll('.reveal-on-scroll');
+    elements.forEach((el, idx) => {
+      el.classList.remove('visible');
+      setTimeout(() => {
+        el.classList.add('visible');
+      }, idx * 150); // Stagger element fades
+    });
+  }
+
+  function goToStep(nextIndex) {
+    if (nextIndex < 0 || nextIndex >= steps.length) return;
+
+    const currentStepId = steps[currentStepIndex];
+    const nextStepId = steps[nextIndex];
+
+    const currentEl = document.getElementById(currentStepId);
+    const nextEl = document.getElementById(nextStepId);
+
+    if (!currentEl || !nextEl) return;
+
+    // Pause typewriter if leaving message page
+    if (currentStepId === 'message') {
+      isTypingPaused = true;
+      if (btnTypePause) btnTypePause.querySelector('span').textContent = "▶️ Resume";
+    }
+
+    currentEl.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentEl.classList.remove('active', 'fade-out');
+      nextEl.classList.add('active');
+
+      currentStepIndex = nextIndex;
+      if (currentStepIndex > maxStepVisited) {
+        maxStepVisited = currentStepIndex;
+      }
+
+      updateProgressDots();
+      revealStepElements(nextStepId);
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      // Page specific logic
+      if (nextStepId === 'reveal') {
+        spawnBalloons();
+        // Remove pulse glow initially if resetting or starting
+        const nextBtn = document.getElementById('btn-reveal-next');
+        if (nextBtn && !candlesBlown) nextBtn.classList.remove('pulse-glow');
+      } else if (nextStepId === 'message') {
+        startTypewriter();
+        const nextBtn = document.getElementById('btn-message-next');
+        if (nextBtn) nextBtn.classList.remove('pulse-glow');
+      } else if (nextStepId === 'final') {
+        spawnConfetti(window.innerWidth / 2, window.innerHeight / 3, 150);
+        for (let i = 0; i < 4; i++) {
+          setTimeout(() => {
+            spawnConfetti(Math.random() * window.innerWidth, Math.random() * (window.innerHeight * 0.4), 80);
+          }, (i + 1) * 1000);
+        }
+      }
+    }, 600);
+  }
+
+  /* --- BALLOON SPARKLE GENERATOR --- */
+  function spawnBalloons() {
+    const wrapper = document.getElementById('balloons-wrapper');
+    if (!wrapper) return;
+    wrapper.innerHTML = ""; // Clear old balloons
+
+    const colors = [
+      'rgba(255, 75, 139, 0.85)',   // Primary Pink
+      'rgba(168, 85, 247, 0.85)',  // Secondary Purple
+      'rgba(255, 215, 0, 0.85)',    // Accent Gold
+      'rgba(56, 189, 248, 0.85)',   // Sky Blue
+      'rgba(244, 63, 94, 0.85)',    // Rose Red
+      'rgba(16, 185, 129, 0.85)'    // Emerald Green
+    ];
+
+    const emojis = ['🎈', '✨', '💖', '🎉', '🎁', '🎂'];
+
+    const numBalloons = 16;
+    for (let i = 0; i < numBalloons; i++) {
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
+
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      balloon.style.backgroundColor = color;
+
+      const leftOffset = Math.random() * 90 + 5; // 5% to 95%
+      const sizeWidth = Math.random() * 15 + 50; // 50px to 65px
+      const sizeHeight = sizeWidth * 1.25;
+      const animDuration = Math.random() * 6 + 10; // 10s to 16s
+      const animDelay = Math.random() * 5;
+
+      balloon.style.left = `${leftOffset}%`;
+      balloon.style.width = `${sizeWidth}px`;
+      balloon.style.height = `${sizeHeight}px`;
+      balloon.style.animationDuration = `${animDuration}s`;
+      balloon.style.animationDelay = `${animDelay}s`;
+
+      if (Math.random() > 0.4) {
+        balloon.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      }
+
+      wrapper.appendChild(balloon);
+    }
+  }
+
+  /* --- WELCOME BUTTON & INITIAL TRANSITION --- */
   const btnOpenSurprise = document.getElementById('btn-open-surprise');
-  btnOpenSurprise.addEventListener('click', () => {
-    // 1. Play Music
-    if (!isPlaying) toggleAudio();
-
-    // 2. Confetti Burst
-    spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 100);
-
-    // 3. Smooth Scroll to Birthday Reveal
-    document.getElementById('reveal').scrollIntoView({ behavior: 'smooth' });
-  });
+  if (btnOpenSurprise) {
+    btnOpenSurprise.addEventListener('click', () => {
+      if (!isPlaying) toggleAudio();
+      spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 100);
+      goToStep(1);
+    });
+  }
 
   /* --- 5. INTERACTIVE CAKE & CANDLE BLOWING --- */
   const cakeEl = document.getElementById('cake');
@@ -316,12 +481,15 @@ document.addEventListener('DOMContentLoaded', () => {
     flames.forEach(f => f.classList.add('out'));
     smokes.forEach(s => s.classList.add('active'));
 
-    // Trigger celebration confetti
     spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.4, 120);
 
     btnBlowCandles.querySelector('span').textContent = "✨ Wish Made! ❤️";
 
-    // Reset after 10 seconds
+    const nextBtn = document.getElementById('btn-reveal-next');
+    if (nextBtn) {
+      nextBtn.classList.add('pulse-glow');
+    }
+
     setTimeout(() => {
       flames.forEach(f => f.classList.remove('out'));
       smokes.forEach(s => s.classList.remove('active'));
@@ -330,8 +498,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 10000);
   }
 
-  cakeEl.addEventListener('click', blowOutCandles);
-  btnBlowCandles.addEventListener('click', blowOutCandles);
+  if (cakeEl) cakeEl.addEventListener('click', blowOutCandles);
+  if (btnBlowCandles) btnBlowCandles.addEventListener('click', blowOutCandles);
 
   /* --- 6. TYPEWRITER ANIMATION ENGINE --- */
   const typingTextEl = document.getElementById('typing-text');
@@ -347,7 +515,11 @@ document.addEventListener('DOMContentLoaded', () => {
     typingTextEl.textContent = "";
     typeIndex = 0;
     isTypingPaused = false;
-    btnTypePause.querySelector('span').textContent = "⏸️ Pause";
+    if (btnTypePause) btnTypePause.querySelector('span').textContent = "⏸️ Pause";
+
+    const nextBtn = document.getElementById('btn-message-next');
+    if (nextBtn) nextBtn.classList.remove('pulse-glow');
+
     typeNextChar();
   }
 
@@ -360,15 +532,24 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const delay = fullText.charAt(typeIndex - 1) === '.' ? 350 : (fullText.charAt(typeIndex - 1) === '\n' ? 500 : 40);
       typewriterTimeout = setTimeout(typeNextChar, delay);
+    } else {
+      const nextBtn = document.getElementById('btn-message-next');
+      if (nextBtn) {
+        nextBtn.classList.add('pulse-glow');
+      }
     }
   }
 
-  btnTypePause.addEventListener('click', () => {
-    isTypingPaused = !isTypingPaused;
-    btnTypePause.querySelector('span').textContent = isTypingPaused ? "▶️ Resume" : "⏸️ Pause";
-  });
+  if (btnTypePause) {
+    btnTypePause.addEventListener('click', () => {
+      isTypingPaused = !isTypingPaused;
+      btnTypePause.querySelector('span').textContent = isTypingPaused ? "▶️ Resume" : "⏸️ Pause";
+    });
+  }
 
-  btnTypeReplay.addEventListener('click', startTypewriter);
+  if (btnTypeReplay) {
+    btnTypeReplay.addEventListener('click', startTypewriter);
+  }
 
   /* --- 7. PHOTO GALLERY & LIGHTBOX MODAL --- */
   const photoGridEl = document.getElementById('photo-grid');
@@ -395,7 +576,10 @@ document.addEventListener('DOMContentLoaded', () => {
       card.addEventListener('click', () => openLightbox(idx));
       photoGridEl.appendChild(card);
     });
-    observeScrollElements();
+
+    if (steps[currentStepIndex] === 'gallery') {
+      revealStepElements('gallery');
+    }
   }
 
   function openLightbox(index) {
@@ -414,22 +598,28 @@ document.addEventListener('DOMContentLoaded', () => {
     lightboxModal.classList.remove('active');
   }
 
-  lightboxClose.addEventListener('click', closeLightbox);
-  lightboxPrev.addEventListener('click', () => {
-    currentPhotoIndex = (currentPhotoIndex - 1 + appConfig.photos.length) % appConfig.photos.length;
-    updateLightbox();
-  });
-  lightboxNext.addEventListener('click', () => {
-    currentPhotoIndex = (currentPhotoIndex + 1) % appConfig.photos.length;
-    updateLightbox();
-  });
+  if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+  if (lightboxPrev) {
+    lightboxPrev.addEventListener('click', () => {
+      currentPhotoIndex = (currentPhotoIndex - 1 + appConfig.photos.length) % appConfig.photos.length;
+      updateLightbox();
+    });
+  }
+  if (lightboxNext) {
+    lightboxNext.addEventListener('click', () => {
+      currentPhotoIndex = (currentPhotoIndex + 1) % appConfig.photos.length;
+      updateLightbox();
+    });
+  }
 
-  lightboxModal.addEventListener('click', (e) => {
-    if (e.target === lightboxModal) closeLightbox();
-  });
+  if (lightboxModal) {
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target === lightboxModal) closeLightbox();
+    });
+  }
 
   document.addEventListener('keydown', (e) => {
-    if (!lightboxModal.classList.contains('active')) return;
+    if (!lightboxModal || !lightboxModal.classList.contains('active')) return;
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') lightboxPrev.click();
     if (e.key === 'ArrowRight') lightboxNext.click();
@@ -443,33 +633,66 @@ document.addEventListener('DOMContentLoaded', () => {
   const cinematicCloseBtn = document.querySelector('.cinematic-close');
   const btnCloseCinematic = document.getElementById('btn-close-cinematic');
 
-  btnTriggerSurprise.addEventListener('click', () => {
-    // 1. Activate Overlay
-    cinematicOverlay.classList.add('active');
+  if (btnTriggerSurprise) {
+    btnTriggerSurprise.addEventListener('click', () => {
+      cinematicOverlay.classList.add('active');
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          spawnConfetti(
+            Math.random() * width,
+            Math.random() * (height * 0.5),
+            80
+          );
+        }, i * 300);
+      }
+      setTimeout(() => cinematicTitle.classList.add('show'), 400);
+      setTimeout(() => cinematicSub.classList.add('show'), 1000);
+      setTimeout(() => cinematicCloseBtn.classList.add('show'), 1800);
+    });
+  }
 
-    // 2. Firework shower
-    for (let i = 0; i < 5; i++) {
-      setTimeout(() => {
-        spawnConfetti(
-          Math.random() * width,
-          Math.random() * (height * 0.5),
-          80
-        );
-      }, i * 300);
+  if (btnCloseCinematic) {
+    btnCloseCinematic.addEventListener('click', () => {
+      cinematicOverlay.classList.remove('active');
+      cinematicTitle.classList.remove('show');
+      cinematicSub.classList.remove('show');
+      cinematicCloseBtn.classList.remove('show');
+
+      goToStep(7); // Proceed to Final step (index 7)
+    });
+  }
+
+  /* --- STEP-BY-STEP GENERAL BACK & NEXT NAVIGATION BUTTONS --- */
+  document.querySelectorAll('.btn-step-back').forEach(btn => {
+    btn.addEventListener('click', () => {
+      goToStep(currentStepIndex - 1);
+    });
+  });
+
+  const nextBtnMap = {
+    'btn-reveal-next': 2,    // Go to message
+    'btn-message-next': 3,   // Go to gallery
+    'btn-gallery-next': 4,   // Go to reasons
+    'btn-reasons-next': 5,   // Go to wishes
+    'btn-wishes-next': 6,    // Go to surprise
+  };
+
+  Object.entries(nextBtnMap).forEach(([btnId, targetIndex]) => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.addEventListener('click', () => {
+        goToStep(targetIndex);
+      });
     }
-
-    // 3. Sequential Reveal
-    setTimeout(() => cinematicTitle.classList.add('show'), 400);
-    setTimeout(() => cinematicSub.classList.add('show'), 1000);
-    setTimeout(() => cinematicCloseBtn.classList.add('show'), 1800);
   });
 
-  btnCloseCinematic.addEventListener('click', () => {
-    cinematicOverlay.classList.remove('active');
-    cinematicTitle.classList.remove('show');
-    cinematicSub.classList.remove('show');
-    cinematicCloseBtn.classList.remove('show');
-  });
+  const btnFinalRestart = document.getElementById('btn-final-restart');
+  if (btnFinalRestart) {
+    btnFinalRestart.addEventListener('click', () => {
+      maxStepVisited = 0;
+      goToStep(0);
+    });
+  }
 
   /* --- 9. PERSONALIZER MODAL DRAWER --- */
   const btnOpenPersonalizer = document.getElementById('btn-open-personalizer');
@@ -478,43 +701,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSavePersonalizer = document.getElementById('btn-save-personalizer');
   const btnResetPersonalizer = document.getElementById('btn-reset-personalizer');
 
-  btnOpenPersonalizer.addEventListener('click', () => {
-    modalPersonalizer.classList.add('active');
-  });
+  if (btnOpenPersonalizer) {
+    btnOpenPersonalizer.addEventListener('click', () => {
+      modalPersonalizer.classList.add('active');
+    });
+  }
 
-  btnCloseModal.addEventListener('click', () => {
-    modalPersonalizer.classList.remove('active');
-  });
+  if (btnCloseModal) {
+    btnCloseModal.addEventListener('click', () => {
+      modalPersonalizer.classList.remove('active');
+    });
+  }
 
-  btnSavePersonalizer.addEventListener('click', () => {
-    const newName = document.getElementById('input-name').value.trim() || "Noor";
-    const newMsg = document.getElementById('input-message').value.trim() || appConfig.messageText;
+  if (btnSavePersonalizer) {
+    btnSavePersonalizer.addEventListener('click', () => {
+      const newName = document.getElementById('input-name').value.trim() || "Noor";
+      const newMsg = document.getElementById('input-message').value.trim() || appConfig.messageText;
 
-    saveConfig({ recipientName: newName, messageText: newMsg });
-    modalPersonalizer.classList.remove('active');
-    spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 60);
-  });
+      saveConfig({ recipientName: newName, messageText: newMsg });
+      modalPersonalizer.classList.remove('active');
+      spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 60);
+    });
+  }
 
-  btnResetPersonalizer.addEventListener('click', () => {
-    saveConfig(DEFAULT_CONFIG);
-    modalPersonalizer.classList.remove('active');
-  });
-
-  /* --- 10. SCROLL REVEAL OBSERVER --- */
-  function observeScrollElements() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+  if (btnResetPersonalizer) {
+    btnResetPersonalizer.addEventListener('click', () => {
+      saveConfig(DEFAULT_CONFIG);
+      modalPersonalizer.classList.remove('active');
+    });
   }
 
   /* --- INITIALIZATION --- */
   applyConfigToDOM();
-  observeScrollElements();
+  initProgressDots();
+  revealStepElements('hero');
 
 });
