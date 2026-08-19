@@ -1,4 +1,4 @@
-# 🌸 Romantic Birthday Surprise Slide-Deck
+# 🌸 Romantic Birthday Surprise Experience
 
 An immersive, highly interactive, and premium multi-step birthday slideshow application built for a modern, romantic, and tactile storytelling experience. This application guides the recipient through a beautifully paced narrative containing custom animations, typewriter messaging, gestural swipe mechanics, and canvas-rendered celebrations.
 
