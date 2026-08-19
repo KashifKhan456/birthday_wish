@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Particle Stores
   const stars = [];
-  const floatingHearts = [];
   const fireworks = [];
   const confettiList = [];
 
@@ -91,47 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
       speed: Math.random() * 0.02 + 0.005,
       dir: Math.random() > 0.5 ? 1 : -1
     });
-  }
-
-  // Heart Constructor
-  function createHeart() {
-    return {
-      x: Math.random() * width,
-      y: height + 20,
-      size: Math.random() * 14 + 10,
-      speedY: Math.random() * 1.5 + 0.8,
-      swaySpeed: Math.random() * 0.03 + 0.01,
-      swayRange: Math.random() * 30 + 10,
-      angle: Math.random() * Math.PI * 2,
-      opacity: Math.random() * 0.6 + 0.3,
-      color: ['#ff4b8b', '#a855f7', '#ff80bf', '#ffd700'][Math.floor(Math.random() * 4)]
-    };
-  }
-
-  for (let i = 0; i < 20; i++) {
-    floatingHearts.push(createHeart());
-  }
-
-  // Draw Heart Helper
-  function drawHeart(x, y, size, color, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.globalAlpha = opacity;
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    const topCurveHeight = size * 0.3;
-    ctx.moveTo(0, topCurveHeight);
-    // top left curve
-    ctx.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, topCurveHeight);
-    // bottom left curve
-    ctx.bezierCurveTo(-size / 2, (size + topCurveHeight) / 2, 0, size, 0, size);
-    // bottom right curve
-    ctx.bezierCurveTo(0, size, size / 2, (size + topCurveHeight) / 2, size / 2, topCurveHeight);
-    // top right curve
-    ctx.bezierCurveTo(size / 2, 0, 0, 0, 0, topCurveHeight);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
   }
 
   // Trigger Firework / Confetti Burst
@@ -169,20 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fill();
     });
 
-    // 2. Draw Floating Hearts
-    floatingHearts.forEach((h, idx) => {
-      h.y -= h.speedY;
-      h.angle += h.swaySpeed;
-      h.x += Math.sin(h.angle) * 0.5;
-
-      drawHeart(h.x, h.y, h.size, h.color, h.opacity);
-
-      if (h.y < -30) {
-        floatingHearts[idx] = createHeart();
-      }
-    });
-
-    // 3. Draw Confetti
+    // 2. Draw Confetti
     for (let i = confettiList.length - 1; i >= 0; i--) {
       const c = confettiList[i];
       c.x += c.vx;

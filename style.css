@@ -161,8 +161,8 @@ section {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 18px 40px;
-  font-size: 1.15rem;
+  padding: 14px 32px;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #ffffff;
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
@@ -978,6 +978,22 @@ section {
 
   .lightbox-prev { left: 10px; }
   .lightbox-next { right: 10px; }
+
+  /* Mobile Stepper Navigation Adjustment */
+  .step-nav {
+    flex-direction: column-reverse;
+    width: 100%;
+    max-width: 320px;
+    margin: 30px auto 0;
+    gap: 12px;
+  }
+
+  .step-nav .btn-secondary,
+  .step-nav .btn-glow {
+    width: 100% !important;
+    justify-content: center;
+    box-sizing: border-box;
+  }
 }
 
 /* ==========================================================================
@@ -1032,6 +1048,18 @@ section {
   gap: 16px;
   justify-content: center;
   width: 100%;
+}
+
+.step-nav .btn-secondary,
+.step-nav .btn-glow {
+  padding: 0 28px !important;
+  font-size: 0.98rem !important;
+  height: 44px !important;
+  line-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .btn-step-next {
@@ -1095,4 +1123,33 @@ section.fade-out {
 
 .pulse-glow {
   animation: pulseGlow 2s infinite ease-in-out !important;
+}
+
+/* Stepper navigation SVG icons */
+.btn-nav-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  stroke-width: 2.5;
+  stroke: currentColor;
+  fill: none;
+  transition: transform 0.2s ease;
+}
+
+.btn-nav-icon-left {
+  margin-right: 6px;
+}
+
+.btn-nav-icon-right {
+  margin-left: 6px;
+}
+
+/* Hover effects for chevrons */
+.btn-step-back:hover .btn-nav-icon {
+  transform: translateX(-3px);
+}
+
+.btn-step-next:hover .btn-nav-icon {
+  transform: translateX(3px);
 }
