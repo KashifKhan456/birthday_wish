@@ -685,7 +685,6 @@ section {
   display: flex;
   align-items: center;
   gap: 8px;
-  animation: floatFlower 3s ease-in-out infinite;
 }
 
 .finger-tap-icon {
