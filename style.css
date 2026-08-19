@@ -463,6 +463,20 @@ section {
   position: relative;
 }
 
+.message-card-decoration {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  font-size: 1.5rem;
+  pointer-events: none;
+  animation: floatFlower 4s ease-in-out infinite;
+}
+
+@keyframes floatFlower {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(8deg); }
+}
+
 .message-card-header {
   display: flex;
   align-items: center;
@@ -1007,6 +1021,12 @@ section {
 
   .message-card-header {
     margin-bottom: 12px !important;
+  }
+
+  .message-card-decoration {
+    top: 14px !important;
+    right: 14px !important;
+    font-size: 1.15rem !important;
   }
 
   .typing-container {
