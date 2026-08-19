@@ -381,6 +381,8 @@ section {
 .candles-row {
   position: absolute;
   top: -65px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 120px;
   display: flex;
   justify-content: space-around;
@@ -960,13 +962,25 @@ section {
    ========================================================================== */
 @media (max-width: 768px) {
   section {
-    padding: 80px 16px 120px;
+    padding: 60px 16px 80px;
     justify-content: flex-start;
   }
 
   #hero {
     justify-content: center;
     padding: 40px 16px;
+  }
+
+  .reveal-title {
+    font-size: clamp(1.4rem, 5vw, 1.8rem) !important;
+    white-space: nowrap;
+    margin-bottom: 2px;
+  }
+
+  .reveal-name {
+    margin-top: -10px !important;
+    margin-bottom: 12px !important;
+    font-size: clamp(2.8rem, 8vw, 4.5rem) !important;
   }
 
   .glass-card {
@@ -985,20 +999,39 @@ section {
   .lightbox-prev { left: 10px; }
   .lightbox-next { right: 10px; }
 
-  /* Mobile Stepper Navigation Adjustment */
+  /* Mobile Stepper Navigation Adjustment: Side-by-side & Sleeker */
   .step-nav {
-    flex-direction: column-reverse;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
     width: 100%;
-    max-width: 320px;
-    margin: 30px auto 0;
-    gap: 12px;
+    max-width: 340px;
+    margin: 15px auto 0;
   }
 
   .step-nav .btn-secondary,
   .step-nav .btn-glow {
-    width: 100% !important;
+    font-size: 0.82rem !important;
+    height: 38px !important;
+    line-height: 38px;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    white-space: nowrap;
+    padding: 0 12px !important;
+  }
+
+  .step-nav .btn-secondary {
+    width: 80px !important;
+    flex: 0 0 auto;
+  }
+
+  .step-nav .btn-glow {
+    flex: 1 1 auto;
+    width: auto !important;
+    min-width: 0 !important;
   }
 
   /* Reposition floating controls to top on mobile to avoid overlap */
