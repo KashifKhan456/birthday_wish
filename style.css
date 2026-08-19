@@ -687,12 +687,6 @@ section {
   gap: 8px;
 }
 
-.finger-tap-icon {
-  font-size: 1.2rem;
-}
-
-
-
 /* ==========================================================================
    SECTION 5: REASONS YOU'RE SPECIAL (3D FLIP CARDS)
    ========================================================================== */
@@ -827,10 +821,13 @@ section {
 }
 
 @keyframes pulseQuestion {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 0 0 rgba(255, 75, 139, 0);
   }
+
   50% {
     transform: scale(1.06);
     box-shadow: 0 0 15px var(--primary-glow);
