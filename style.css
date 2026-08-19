@@ -463,6 +463,28 @@ section {
   position: relative;
 }
 
+.message-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.message-title {
+  font-size: clamp(1.3rem, 4vw, 1.7rem);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.message-title-icon {
+  width: 24px;
+  height: 24px;
+  stroke: var(--primary);
+}
+
 .typing-container {
   font-size: clamp(1.05rem, 2.2vw, 1.25rem);
   line-height: 1.8;
@@ -962,7 +984,7 @@ section {
    ========================================================================== */
 @media (max-width: 768px) {
   section {
-    padding: 60px 16px 80px;
+    padding: 86px 16px 80px;
     justify-content: flex-start;
   }
 
@@ -981,6 +1003,15 @@ section {
     margin-top: -10px !important;
     margin-bottom: 12px !important;
     font-size: clamp(2.8rem, 8vw, 4.5rem) !important;
+  }
+
+  .message-card-header {
+    margin-bottom: 12px !important;
+  }
+
+  .typing-container {
+    margin-bottom: 16px !important;
+    min-height: 140px !important;
   }
 
   .glass-card {

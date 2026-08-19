@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Pause typewriter if leaving message page
     if (currentStepId === 'message') {
       isTypingPaused = true;
-      if (btnTypePause) btnTypePause.querySelector('span').textContent = "▶️ Resume";
+      updatePauseButtonState(true);
     }
 
     currentEl.classList.add('fade-out');
@@ -455,12 +455,23 @@ document.addEventListener('DOMContentLoaded', () => {
   let isTypingPaused = false;
   let typewriterTimeout = null;
 
+  function updatePauseButtonState(paused) {
+    if (!btnTypePause) return;
+    const span = btnTypePause.querySelector('span');
+    if (!span) return;
+    if (paused) {
+      span.innerHTML = `<svg class="btn-nav-icon btn-nav-icon-left" style="width: 14px; height: 14px; margin-right: 6px; display: inline-block; vertical-align: middle; stroke: currentColor;" fill="none" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>Resume`;
+    } else {
+      span.innerHTML = `<svg class="btn-nav-icon btn-nav-icon-left" style="width: 14px; height: 14px; margin-right: 6px; display: inline-block; vertical-align: middle; stroke: currentColor;" fill="none" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" /></svg>Pause`;
+    }
+  }
+
   function startTypewriter() {
     if (typewriterTimeout) clearTimeout(typewriterTimeout);
     typingTextEl.textContent = "";
     typeIndex = 0;
     isTypingPaused = false;
-    if (btnTypePause) btnTypePause.querySelector('span').textContent = "⏸️ Pause";
+    updatePauseButtonState(false);
 
     const nextBtn = document.getElementById('btn-message-next');
     if (nextBtn) nextBtn.classList.remove('pulse-glow');
@@ -488,7 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnTypePause) {
     btnTypePause.addEventListener('click', () => {
       isTypingPaused = !isTypingPaused;
-      btnTypePause.querySelector('span').textContent = isTypingPaused ? "▶️ Resume" : "⏸️ Pause";
+      updatePauseButtonState(isTypingPaused);
     });
   }
 
