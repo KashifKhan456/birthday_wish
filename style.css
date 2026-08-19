@@ -32,7 +32,9 @@
 }
 
 /* --- Base & Reset --- */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -102,7 +104,8 @@ section {
   min-height: 100vh;
   width: 100%;
   padding: 80px 20px;
-  display: none; /* Hidden by default in step-by-step mode */
+  display: none;
+  /* Hidden by default in step-by-step mode */
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -263,9 +266,22 @@ section {
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
+  }
 }
 
 /* ==========================================================================
@@ -289,8 +305,15 @@ section {
 }
 
 @keyframes floatName {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(1deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
 }
 
 /* Balloons Container */
@@ -327,10 +350,23 @@ section {
 }
 
 @keyframes balloonFloat {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.85; }
-  90% { opacity: 0.85; }
-  100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.85;
+  }
+
+  90% {
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translateY(-110vh) rotate(20deg);
+    opacity: 0;
+  }
 }
 
 /* CSS Birthday Cake */
@@ -444,13 +480,25 @@ section {
 }
 
 @keyframes flicker {
-  0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
-  100% { transform: translateX(-50%) scale(1.15) rotate(2deg); }
+  0% {
+    transform: translateX(-50%) scale(1) rotate(-2deg);
+  }
+
+  100% {
+    transform: translateX(-50%) scale(1.15) rotate(2deg);
+  }
 }
 
 @keyframes smokeRise {
-  0% { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(3); }
+  0% {
+    opacity: 0.8;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px) scale(3);
+  }
 }
 
 /* ==========================================================================
@@ -473,8 +521,15 @@ section {
 }
 
 @keyframes floatFlower {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-4px) rotate(8deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-4px) rotate(8deg);
+  }
 }
 
 .message-card-header {
@@ -519,8 +574,15 @@ section {
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .message-controls {
@@ -636,7 +698,9 @@ section {
   text-align: center;
 }
 
-.lightbox-close, .lightbox-prev, .lightbox-next {
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
   position: absolute;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -653,49 +717,171 @@ section {
   z-index: 1001;
 }
 
-.lightbox-close { top: 20px; right: 20px; }
-.lightbox-prev { left: 20px; top: 50%; transform: translateY(-50%); }
-.lightbox-next { right: 20px; top: 50%; transform: translateY(-50%); }
+.lightbox-close {
+  top: 20px;
+  right: 20px;
+}
 
-.lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover {
+.lightbox-prev {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-next {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
   background: var(--primary);
 }
 
 /* ==========================================================================
-   SECTION 5: REASONS YOU'RE SPECIAL
+   SECTION 5: REASONS YOU'RE SPECIAL (3D FLIP CARDS)
    ========================================================================== */
 .reasons-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
+  perspective: 1000px;
 }
 
-.reason-card {
-  text-align: left;
+.flip-card {
+  background-color: transparent;
+  width: 100%;
+  height: 220px;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Front Face: Question Mark */
+.flip-card-front {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 2;
 }
 
-.reason-number {
+.flip-card-front .reason-number {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.question-mark-container {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(255, 75, 139, 0.08);
+  border: 2px dashed var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  animation: pulseQuestion 2.5s infinite ease-in-out;
+}
+
+.question-mark {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.click-to-reveal {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Back Face: Reason Content */
+.flip-card-back {
+  background: var(--bg-card);
+  border: 1px solid var(--primary);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 28px;
+  z-index: 1;
+  text-align: left;
+}
+
+.flip-card-back .reason-number {
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 1.5px;
+  margin-bottom: 6px;
 }
 
-.reason-title {
-  font-size: 1.35rem;
+.flip-card-back .reason-title {
+  font-size: 1.3rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 8px;
+  color: var(--text-main);
 }
 
-.reason-desc {
+.flip-card-back .reason-desc {
   color: var(--text-muted);
-  font-size: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@keyframes pulseQuestion {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 75, 139, 0);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 15px var(--primary-glow);
+  }
 }
 
 /* ==========================================================================
@@ -855,8 +1041,15 @@ section {
 }
 
 @keyframes heartPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.3); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
 }
 
 /* ==========================================================================
@@ -909,7 +1102,9 @@ section {
 }
 
 @keyframes spinSlow {
-  100% { transform: rotate(360deg); }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Personalize Modal */
@@ -1038,7 +1233,9 @@ section {
     padding: 24px 18px;
   }
 
-  .photo-grid, .reasons-grid, .wishes-grid {
+  .photo-grid,
+  .reasons-grid,
+  .wishes-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1047,8 +1244,13 @@ section {
     padding: 16px 28px;
   }
 
-  .lightbox-prev { left: 10px; }
-  .lightbox-next { right: 10px; }
+  .lightbox-prev {
+    left: 10px;
+  }
+
+  .lightbox-next {
+    right: 10px;
+  }
 
   /* Mobile Stepper Navigation Adjustment: Side-by-side & Sleeker */
   .step-nav {
@@ -1192,6 +1394,7 @@ section.fade-out {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1203,6 +1406,7 @@ section.fade-out {
     opacity: 1;
     transform: translateY(0);
   }
+
   to {
     opacity: 0;
     transform: translateY(-30px);
@@ -1220,10 +1424,13 @@ section.fade-out {
 
 /* Pulsing highlight for next buttons */
 @keyframes pulseGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 0 15px var(--primary-glow);
   }
+
   50% {
     transform: scale(1.03);
     box-shadow: 0 0 25px var(--primary);

@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.recipient-name').forEach(el => {
       el.textContent = appConfig.recipientName;
     });
-    
+
     // Update input fields in modal if open
     const nameInput = document.getElementById('input-name');
     const msgInput = document.getElementById('input-message');
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render Photo Gallery
     renderGallery();
-    
+
     // Restart Typewriter
     startTypewriter();
   }
@@ -686,6 +686,14 @@ document.addEventListener('DOMContentLoaded', () => {
       modalPersonalizer.classList.remove('active');
     });
   }
+
+  /* --- 9.5 REASONS CARD FLIP EVENT LISTENERS --- */
+  const flipCards = document.querySelectorAll('.flip-card');
+  flipCards.forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+    });
+  });
 
   /* --- INITIALIZATION --- */
   applyConfigToDOM();
