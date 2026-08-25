@@ -14,7 +14,7 @@ export default function FloatingControls({
   return (
     <>
       {/* Music Control Button */}
-      <div className="floating-controls fixed bottom-6 right-6 z-999 flex flex-col gap-3">
+      <div className="floating-controls fixed top-6 md:top-auto bottom-auto md:bottom-6 right-6 z-999 flex flex-col gap-3">
         <button
           onClick={onToggleAudio}
           className={`icon-btn w-12 h-12 rounded-full text-white text-xl flex items-center justify-center cursor-pointer shadow-lg transition-all duration-500 border border-white/20 bg-white/10 backdrop-blur ${
@@ -27,7 +27,7 @@ export default function FloatingControls({
       </div>
 
       {/* Settings Control Button */}
-      <div className="floating-left-controls fixed bottom-6 left-6 z-999">
+      <div className="floating-left-controls fixed top-6 md:top-auto bottom-auto md:bottom-6 left-6 z-999">
         <button
           onClick={onOpenPersonalizer}
           className="icon-btn w-12 h-12 rounded-full text-white text-xl flex items-center justify-center cursor-pointer shadow-lg transition-all duration-500 border border-white/20 bg-white/10 backdrop-blur hover:bg-primary"

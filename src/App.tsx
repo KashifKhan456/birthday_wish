@@ -286,7 +286,7 @@ export default function App() {
       {/* ==========================================================================
            SURPRISE PROGRESS STEPS HEADER INDICATOR
            ========================================================================== */}
-      <div className="steps-progress flex items-center justify-center gap-2 md:gap-3 z-10 w-full px-4 select-none">
+      <div className="steps-progress hidden md:flex items-center justify-center gap-2 md:gap-3 z-10 w-full px-4 select-none">
         {STEPS.map((_, idx) => (
           <button
             key={idx}
