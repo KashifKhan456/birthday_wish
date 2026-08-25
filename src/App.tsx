@@ -309,7 +309,7 @@ export default function App() {
            MAIN CONTENT WRAPPER WITH SCROLL-IN/OUT FADE TRANSITIONS
            ========================================================================== */}
       <main
-        className={`w-full max-w-4xl mx-auto px-4 z-10 flex flex-col items-center justify-center min-h-[55vh] md:min-h-[85vh] pt-14 md:pt-0 transition-all duration-700 ${
+        className={`w-full max-w-4xl mx-auto px-4 z-10 flex flex-col items-center justify-center min-h-[55vh] md:min-h-[85vh] pt-8 md:pt-0 transition-all duration-700 ${
           fadeState === 'in' ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-8 scale-95 pointer-events-none'
         }`}
       >
