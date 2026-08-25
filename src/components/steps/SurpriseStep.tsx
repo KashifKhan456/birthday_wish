@@ -29,7 +29,7 @@ export default function SurpriseStep({
             onClick={onTriggerCinematic}
             className="btn-glow btn-step-next flex-1 flex items-center justify-center"
           >
-            One More Surprise ✨ <ChevronRight size={20} className="shrink-0 ml-1.5 transition-transform" />
+            One More Surprise… ✨ <ChevronRight size={20} className="shrink-0 ml-1.5 transition-transform" />
           </button>
         </div>
       </div>

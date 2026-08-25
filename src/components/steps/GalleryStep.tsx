@@ -95,17 +95,15 @@ export default function GalleryStep({
             if (isPast) {
               const savedSwipe = activeCardSwipeRef.current;
               style = {
-                transform: `translate3d(${savedSwipe.swipeX || '-150%'}, ${
-                  savedSwipe.swipeY || '0px'
-                }, 0px) rotate(${savedSwipe.swipeRotate || '-30deg'})`,
+                transform: `translate3d(${savedSwipe.swipeX || '-150%'}, ${savedSwipe.swipeY || '0px'
+                  }, 0px) rotate(${savedSwipe.swipeRotate || '-30deg'})`,
                 opacity: 0,
                 pointerEvents: 'none'
               };
             } else if (isCurrent) {
               style = {
-                transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0px) rotate(${
-                  dragOffset.x * 0.08
-                }deg) scale(1)`,
+                transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0px) rotate(${dragOffset.x * 0.08
+                  }deg) scale(1)`,
                 opacity: 1,
                 pointerEvents: 'auto',
                 zIndex: 10,
