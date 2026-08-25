@@ -192,7 +192,7 @@ export default function GalleryStep({
           <span className="font-semibold text-primary">{activePhotoIndex + 1}</span>
           <span className="opacity-55">/</span>
           <span>{photos.length}</span>
-          <span className="ml-2 text-white/50 text-xs italic">Swipe or tap the photo to see the next memory</span>
+          <span className="ml-2 text-white/50 text-xs italic">Swipe or tap photo to see next</span>
         </div>
       </div>
 
