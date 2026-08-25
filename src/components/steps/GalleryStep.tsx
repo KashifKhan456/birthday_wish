@@ -142,35 +142,47 @@ export default function GalleryStep({
                 className="stack-card absolute w-full h-full bg-white p-3 pb-6 rounded-lg shadow-2xl transition-all duration-300 border border-slate-200 select-none touch-none"
                 style={style}
                 onMouseDown={(e) => {
-                  e.preventDefault();
-                  handleDragStart(e.clientX, e.clientY);
+                  if (isCurrent) {
+                    e.preventDefault();
+                    handleDragStart(e.clientX, e.clientY);
+                  }
                 }}
-                onMouseMove={(e) => handleDragMove(e.clientX, e.clientY)}
+                onMouseMove={(e) => {
+                  if (isCurrent && isDragging) {
+                    handleDragMove(e.clientX, e.clientY);
+                  }
+                }}
                 onMouseUp={handleDragEnd}
                 onMouseLeave={handleDragEnd}
                 onTouchStart={(e) => {
-                  const touch = e.touches[0];
-                  handleDragStart(touch.clientX, touch.clientY);
+                  if (isCurrent) {
+                    const touch = e.touches[0];
+                    handleDragStart(touch.clientX, touch.clientY);
+                  }
                 }}
                 onTouchMove={(e) => {
-                  const touch = e.touches[0];
-                  handleDragMove(touch.clientX, touch.clientY);
+                  if (isCurrent && isDragging) {
+                    const touch = e.touches[0];
+                    handleDragMove(touch.clientX, touch.clientY);
+                  }
                 }}
                 onTouchEnd={handleDragEnd}
+                onClick={() => {
+                  if (isCurrent && Math.abs(dragOffset.x) < 5) {
+                    swipeCard('right');
+                  }
+                }}
               >
-                <div className="card-image-wrapper w-full h-[76%] rounded overflow-hidden bg-slate-900 pointer-events-none select-none relative">
+                <div className="stack-card-image-wrapper w-full h-57.5 md:h-67.5 overflow-hidden rounded border border-slate-200">
                   <img
                     src={photo.url}
                     alt={photo.caption}
                     className="w-full h-full object-cover pointer-events-none select-none"
                     draggable="false"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                 </div>
-                <div className="card-content mt-4 px-2 text-center pointer-events-none select-none">
-                  <p className="card-caption font-handwriting text-slate-800 text-lg md:text-xl font-bold tracking-wide truncate">
-                    {photo.caption}
-                  </p>
+                <div className="stack-card-caption mt-3 md:mt-4 font-['Caveat',cursive] text-2xl font-bold text-slate-800 text-center leading-tight select-text">
+                  {photo.caption}
                 </div>
               </div>
             );
@@ -182,7 +194,7 @@ export default function GalleryStep({
           <span className="font-semibold text-primary">{activePhotoIndex + 1}</span>
           <span className="opacity-55">/</span>
           <span>{photos.length}</span>
-          <span className="ml-2 text-white/50 text-xs italic">Swipe left/right to browse</span>
+          <span className="ml-2 text-white/50 text-xs italic">Swipe or tap the photo to see the next memory</span>
         </div>
       </div>
 
